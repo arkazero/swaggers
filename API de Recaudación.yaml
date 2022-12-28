@@ -1,0 +1,599 @@
+swagger: '2.0'
+info:
+  description: >-
+    Banesco API proporciona un grupo de servicios para desarrollar aplicaciones
+    que permitan consultar cuentas y realizar transferencias
+  version: API V1
+  title: Banesco Rest API
+  termsOfService: www.termsofservices.banesco.api.example.com
+  contact:
+    name: myaddressapisupport@banesco.com
+host: api-public-payment-route-apis-banesco-qa.apps.desplakur3.desintra.banesco.com
+basePath: /
+tags:
+  - name: API de Recaudación
+    description: Public Payment Controller
+  - name: generator-id-controller
+    description: Generador de identificadores únicos
+  - name: header-controller
+    description: Generador de cabecera del mensaje de solicitud
+paths:
+  /financial-account/payment:
+    post:
+      tags:
+        - API de Recaudación
+      summary: Retorna el resultado de una transacción de cargo en cuenta
+      operationId: paymentUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: fintechId
+          in: header
+          description: fintechId
+          required: true
+          type: string
+        - name: idNumber
+          in: header
+          description: idNumber
+          required: true
+          type: string
+        - name: idType
+          in: header
+          description: idType
+          required: true
+          type: string
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/PaymentRequest'
+        - name: username
+          in: header
+          description: username
+          required: true
+          type: string
+      responses:
+        '200':
+          description: La solicitud ha tenido éxito
+          schema:
+            $ref: '#/definitions/PaymentResponse'
+          examples:
+            application/json:
+              dataResponse:
+                referenceNumber: '2345'
+              httpStatus:
+                statusCode: '200'
+                statusDesc: OK
+        '201':
+          description: Created
+        '400':
+          description: Error en datos de entrada
+        '401':
+          description: La solicitud requiere autenticación
+        '403':
+          description: Está prohibido acceder al recurso que estaba tratando de alcanzar
+        '404':
+          description: Not Found
+        '409':
+          description: Conflicto
+        '424':
+          description: Dependencia fallida
+        '429':
+          description: Numero de pago duplicado
+        '503':
+          description: Servicio no disponible
+      deprecated: false
+  /generator/id/instance-id:
+    get:
+      tags:
+        - generator-id-controller
+      summary: Permite generar un identificador único de la instancia
+      operationId: getInstanceIdUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: La solicitud ha tenido éxito
+          schema:
+            type: string
+        '401':
+          description: La solicitud requiere autenticación
+        '403':
+          description: Está prohibido acceder al recurso que estaba tratando de alcanzar
+        '404':
+          description: >-
+            El servidor no ha encontrado nada que coincida con el URI de
+            solicitud
+      deprecated: false
+  /generator/id/request-id/{instanceId}:
+    get:
+      tags:
+        - generator-id-controller
+      summary: Permite generar un identificador único de la solicitud
+      operationId: getRequestIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: instanceId
+          in: path
+          description: instanceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: La solicitud ha tenido éxito
+          schema:
+            type: string
+        '401':
+          description: La solicitud requiere autenticación
+        '403':
+          description: Está prohibido acceder al recurso que estaba tratando de alcanzar
+        '404':
+          description: >-
+            El servidor no ha encontrado nada que coincida con el URI de
+            solicitud
+      deprecated: false
+  /generator/id/transaction-id:
+    get:
+      tags:
+        - generator-id-controller
+      summary: Permite generar un identificador único de la transacción
+      operationId: getTransactionIdUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: La solicitud ha tenido éxito
+          schema:
+            type: string
+        '401':
+          description: La solicitud requiere autenticación
+        '403':
+          description: Está prohibido acceder al recurso que estaba tratando de alcanzar
+        '404':
+          description: >-
+            El servidor no ha encontrado nada que coincida con el URI de
+            solicitud
+      deprecated: false
+  /header/{headerName}:
+    get:
+      tags:
+        - header-controller
+      summary: Permite obtener la cabecera del mensaje apropiada para la solicitud
+      operationId: getHeaderUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: headerName
+          in: path
+          description: headerName
+          required: true
+          type: string
+      responses:
+        '200':
+          description: La solicitud ha tenido éxito
+          schema:
+            $ref: '#/definitions/MsgRqHdr'
+        '401':
+          description: La solicitud requiere autenticación
+        '403':
+          description: Está prohibido acceder al recurso que estaba tratando de alcanzar
+        '404':
+          description: >-
+            El servidor no ha encontrado nada que coincida con el URI de
+            solicitud
+      deprecated: false
+definitions:
+  ApplicantData:
+    type: object
+    properties:
+      application:
+        type: string
+        xml:
+          name: Application
+          attribute: false
+          wrapped: false
+      channel:
+        type: string
+        xml:
+          name: Channel
+          attribute: false
+          wrapped: false
+      enterpriseCode:
+        type: string
+        xml:
+          name: EnterpriseCode
+          attribute: false
+          wrapped: false
+      hostName:
+        type: string
+        xml:
+          name: HostName
+          attribute: false
+          wrapped: false
+      idDocument:
+        type: string
+        xml:
+          name: IdDocument
+          attribute: false
+          wrapped: false
+      ipAddress:
+        type: string
+        xml:
+          name: IpAddress
+          attribute: false
+          wrapped: false
+      nationality:
+        type: string
+        xml:
+          name: Nationality
+          attribute: false
+          wrapped: false
+      planCode:
+        type: string
+        xml:
+          name: PlanCode
+          attribute: false
+          wrapped: false
+      privateChannelId:
+        type: string
+        xml:
+          name: PrivateChannelId
+          attribute: false
+          wrapped: false
+      rolType:
+        type: string
+        xml:
+          name: RolType
+          attribute: false
+          wrapped: false
+      stadisticId:
+        type: string
+        xml:
+          name: StadisticId
+          attribute: false
+          wrapped: false
+    title: ApplicantData
+    xml:
+      name: ApplicantData
+      attribute: false
+      wrapped: false
+  DataRequest:
+    type: object
+    properties:
+      device:
+        $ref: '#/definitions/Device'
+      payment:
+        $ref: '#/definitions/Payment'
+      securityAuth:
+        $ref: '#/definitions/SecurityAuth'
+    title: DataRequest
+  DataResponse:
+    type: object
+    properties:
+      referenceNumber:
+        type: string
+    title: DataResponse
+  Device:
+    type: object
+    properties:
+      description:
+        type: string
+      ipAddress:
+        type: string
+      type:
+        type: string
+    title: Device
+  HttpStatus:
+    type: object
+    properties:
+      statusCode:
+        type: string
+      statusDesc:
+        type: string
+    title: HttpStatus
+  MsgRqHdr:
+    type: object
+    properties:
+      applicantData:
+        xml:
+          name: ApplicantData
+          attribute: false
+          wrapped: false
+        $ref: '#/definitions/ApplicantData'
+      finalStatusRequest:
+        type: string
+        xml:
+          name: FinalStatusRequest
+          attribute: false
+          wrapped: false
+      lastStatusRequest:
+        type: string
+        xml:
+          name: LastStatusRequest
+          attribute: false
+          wrapped: false
+      lineId:
+        type: string
+        xml:
+          name: LineId
+          attribute: false
+          wrapped: false
+      messageDate:
+        type: string
+        xml:
+          name: MessageDate
+          attribute: false
+          wrapped: false
+      messageId:
+        type: string
+        xml:
+          name: MessageId
+          attribute: false
+          wrapped: false
+      messageTime:
+        type: string
+        xml:
+          name: MessageTime
+          attribute: false
+          wrapped: false
+      networkTrnInfo:
+        type: array
+        xml:
+          name: NetworkTrnInfo
+          attribute: false
+          wrapped: false
+        items:
+          $ref: '#/definitions/NetworkTrnInfo'
+      operatorCode:
+        type: string
+        xml:
+          name: OperatorCode
+          attribute: false
+          wrapped: false
+      priority:
+        type: string
+        xml:
+          name: Priority
+          attribute: false
+          wrapped: false
+      recCtrlIn:
+        xml:
+          name: RecCtrlIn
+          attribute: false
+          wrapped: false
+        $ref: '#/definitions/RecCtrlIn'
+      requestId:
+        type: string
+        xml:
+          name: RequestId
+          attribute: false
+          wrapped: false
+      requestedOperationType:
+        type: string
+        xml:
+          name: RequestedOperationType
+          attribute: false
+          wrapped: false
+      resumeId:
+        type: string
+        xml:
+          name: ResumeId
+          attribute: false
+          wrapped: false
+      returnValue:
+        type: string
+        xml:
+          name: ReturnValue
+          attribute: false
+          wrapped: false
+      reverseId:
+        type: string
+        xml:
+          name: ReverseId
+          attribute: false
+          wrapped: false
+      sourceChannelCode:
+        type: string
+        xml:
+          name: SourceChannelCode
+          attribute: false
+          wrapped: false
+      supervisorCode:
+        type: string
+        xml:
+          name: SupervisorCode
+          attribute: false
+          wrapped: false
+      vbprotocol:
+        $ref: '#/definitions/VBProtocol'
+    title: MsgRqHdr
+    xml:
+      name: MsgRqHdr
+      attribute: false
+      wrapped: false
+  NetworkTrnInfo:
+    type: object
+    properties:
+      agencyCode:
+        type: string
+        xml:
+          name: AgencyCode
+          attribute: false
+          wrapped: false
+      bankId:
+        type: string
+        xml:
+          name: BankId
+          attribute: false
+          wrapped: false
+      channelId:
+        type: string
+        xml:
+          name: ChannelId
+          attribute: false
+          wrapped: false
+      channelUserId:
+        type: string
+        xml:
+          name: ChannelUserId
+          attribute: false
+          wrapped: false
+      configuredTransactionCode:
+        type: string
+        xml:
+          name: ConfiguredTransactionCode
+          attribute: false
+          wrapped: false
+      desc:
+        type: string
+        xml:
+          name: Desc
+          attribute: false
+          wrapped: false
+      operationExecIndicator:
+        type: string
+        xml:
+          name: OperationExecIndicator
+          attribute: false
+          wrapped: false
+      operationType:
+        type: string
+        xml:
+          name: OperationType
+          attribute: false
+          wrapped: false
+      originatorName:
+        type: string
+        xml:
+          name: OriginatorName
+          attribute: false
+          wrapped: false
+      registerNumber:
+        type: string
+        xml:
+          name: RegisterNumber
+          attribute: false
+          wrapped: false
+      transactionCode:
+        type: string
+        xml:
+          name: TransactionCode
+          attribute: false
+          wrapped: false
+      transactionConsecutive:
+        type: string
+        xml:
+          name: TransactionConsecutive
+          attribute: false
+          wrapped: false
+      transactionDate:
+        type: string
+        xml:
+          name: TransactionDate
+          attribute: false
+          wrapped: false
+      transactionTime:
+        type: string
+        xml:
+          name: TransactionTime
+          attribute: false
+          wrapped: false
+      transactionType:
+        type: string
+        xml:
+          name: TransactionType
+          attribute: false
+          wrapped: false
+      userId:
+        type: string
+        xml:
+          name: UserId
+          attribute: false
+          wrapped: false
+      userType:
+        type: string
+        xml:
+          name: UserType
+          attribute: false
+          wrapped: false
+    title: NetworkTrnInfo
+    xml:
+      name: NetworkTrnInfo
+      attribute: false
+      wrapped: false
+  Payment:
+    type: object
+    properties:
+      accountDebit:
+        type: string
+      accountType:
+        type: string
+      amount:
+        type: number
+        format: double
+      companyCode:
+        type: string
+      companyId:
+        type: string
+      concept:
+        type: string
+      paymentId:
+        type: string
+    title: Payment
+  PaymentRequest:
+    type: object
+    properties:
+      dataRequest:
+        description: Data Request
+        $ref: '#/definitions/DataRequest'
+    title: PaymentRequest
+  PaymentResponse:
+    type: object
+    properties:
+      dataResponse:
+        description: Data
+        $ref: '#/definitions/DataResponse'
+      httpStatus:
+        description: StatusHttp
+        $ref: '#/definitions/HttpStatus'
+    title: PaymentResponse
+  RecCtrlIn:
+    type: object
+    properties:
+      maxRec:
+        type: string
+        xml:
+          name: MaxRec
+          attribute: false
+          wrapped: false
+    title: RecCtrlIn
+    xml:
+      name: RecCtrlIn
+      attribute: false
+      wrapped: false
+  SecurityAuth:
+    type: object
+    properties:
+      otp:
+        type: string
+    title: SecurityAuth
+  VBProtocol:
+    type: object
+    properties:
+      transactionInd:
+        type: boolean
+        xml:
+          name: TransactionInd
+          attribute: false
+          wrapped: false
+      vbprotocolInd:
+        type: boolean
+    title: VBProtocol
+    xml:
+      name: VBProtocol
+      attribute: false
+      wrapped: false
