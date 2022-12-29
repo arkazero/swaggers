@@ -1,0 +1,133 @@
+openapi: 3.0.1
+info:
+  title: Beer Catalog API
+  description: An API for querying beer catalog of Acme Inc.
+  contact:
+    name: Laurent Broudoux
+    url: http://github.com/lbroudoux
+    email: laurent.broudoux@gmail.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "0.9"
+servers:
+- url: /
+tags:
+- name: beer
+  description: Beer resource
+paths:
+  /beer/{name}:
+    get:
+      tags:
+      - beer
+      summary: Get beer having name
+      description: Get beer having name
+      operationId: GetBeer
+      parameters:
+      - name: name
+        in: path
+        description: Name of beer to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Beer having requested name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beer'
+              example:
+                name: Rodenbach
+                country: Belgium
+                type: Fruit
+                rating: "4.3"
+                status: available
+  /beer/findByStatus/{status}:
+    get:
+      tags:
+      - beer
+      summary: Get beers having status
+      description: Get beers having status
+      operationId: FindBeersByStatus
+      parameters:
+      - name: status
+        in: path
+        description: Status of beers to retrieve
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Number of page to retrieve
+        schema:
+          type: number
+      responses:
+        200:
+          description: List of beers having requested status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Beer'
+              example:
+              - name: Rodenbach
+                country: Belgium
+                type: Fruit
+                rating: "4.2"
+                status: available
+              - name: Weissbier
+                country: Germany
+                type: Wheat
+                rating: "4.1"
+                status: available
+  /beer:
+    get:
+      tags:
+      - beer
+      summary: List beers within catalog
+      description: List beers within catalog
+      operationId: ListBeers
+      parameters:
+      - name: page
+        in: query
+        description: Number of page to retrieve
+        schema:
+          type: number
+      - name: myparam
+        in: query
+        description: Description
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Array of beers
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Beer'
+  /resource: {}
+components:
+  schemas:
+    Beer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of Beer
+        country:
+          type: string
+          description: Origin country of Beer
+        type:
+          type: string
+          description: Type of Beer
+        rating:
+          type: number
+          description: Rating from customers
+        status:
+          type: string
+          description: Stock status
