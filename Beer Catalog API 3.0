@@ -10,8 +10,6 @@ info:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "1.0"
-servers:
-- url: /
 tags:
 - name: beer
   description: Beer resource
