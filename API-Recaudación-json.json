@@ -37,7 +37,7 @@
           "application/json"
         ],
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -135,7 +135,7 @@
         "summary": "Permite generar un identificador único de la instancia",
         "operationId": "getInstanceIdUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "responses": {
           "200": {
@@ -165,7 +165,7 @@
         "summary": "Permite generar un identificador único de la solicitud",
         "operationId": "getRequestIdUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
@@ -204,7 +204,7 @@
         "summary": "Permite generar un identificador único de la transacción",
         "operationId": "getTransactionIdUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "responses": {
           "200": {
@@ -234,7 +234,7 @@
         "summary": "Permite obtener la cabecera del mensaje apropiada para la solicitud",
         "operationId": "getHeaderUsingGET",
         "produces": [
-          "*/*"
+          "application/json"
         ],
         "parameters": [
           {
